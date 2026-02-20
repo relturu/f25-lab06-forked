@@ -52,20 +52,17 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        assertTrue(mQueue.peek()==0);
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        assertTrue(mQueue.peek()>0);
     }
 
     @Test
@@ -80,8 +77,12 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        for (int i = 0; i < testList.size(); i++){
+            int expected = mQueue.peek();
+            int actual = mQueue.dequeue(); // is dequeue destructive does it actually mutate the queue
+            assertEquals(expected, actual); // how to test the val is expected
+            assertEquals(i-1, mQueue.size());
+        }
     }
 
     @Test
