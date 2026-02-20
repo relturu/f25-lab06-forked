@@ -38,10 +38,20 @@ public class IntQueueTest {
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-    //    mQueue = new ArrayIntQueue();
+        // mQueue = new LinkedIntQueue();
+        mQueue = new ArrayIntQueue();
 
         testList = new ArrayList<>(List.of(1, 2, 3));
+    }
+
+    @Test
+    public void testClear() {
+        // should remove all elements from queue
+        mQueue.enqueue(2);
+        mQueue.enqueue(3);
+        mQueue.enqueue(4);
+        mQueue.clear();
+        assertTrue(mQueue.size()==0);
     }
 
     @Test
@@ -52,20 +62,28 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(0);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        if (mQueue.size()==0){
+            assertEquals(null, mQueue.peek());
+        }
+        else{
+            assertTrue(mQueue.peek()==0);
+        }
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        if (mQueue.size()==0){
+            assertEquals(null, mQueue.peek());
+        }
+        else{
+            assertTrue(mQueue.peek()>0);
+        }
     }
 
     @Test
@@ -80,8 +98,48 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        for (int i = 0; i < testList.size(); i++){
+            if (mQueue.size() ==0){
+                assertEquals(null, mQueue.dequeue());
+            }
+            else{
+                int expected = mQueue.peek();
+                int actual = mQueue.dequeue(); // is dequeue destructive does it actually mutate the queue
+                assertEquals(expected, actual); // how to test the val is expected
+                assertEquals(i-1, mQueue.size());
+            }
+            
+        }
+    }
+
+    @Test
+    public void testEnsureCapacity() {
+        // crurently has 3 | 0 1 2 (head)
+        // have initial capacity of 10
+        mQueue.clear();
+        // fills completely 
+        for (int i = 0; i < 10; i++){
+            mQueue.enqueue(i);
+        }
+        // dequeue a few to move head forward (creates wrap-around)
+        mQueue.dequeue();
+        mQueue.dequeue();
+        mQueue.dequeue();
+        
+        // enqueue more to force resize (triggers ensureCapacity with head != 0)
+        mQueue.enqueue(10);
+        mQueue.enqueue(11);
+        mQueue.enqueue(12);
+        mQueue.enqueue(13);
+
+        // verify size is correct
+        assertEquals(11, mQueue.size());
+
+        // verify order is preserved - dequeue should come out in correct order
+        assertEquals(3, (int) mQueue.dequeue()); // first 3 were dequeued, so 3 is next
+        assertEquals(4, (int) mQueue.dequeue());
+        assertEquals(5, (int) mQueue.dequeue());
+
     }
 
     @Test
@@ -104,6 +162,7 @@ public class IntQueueTest {
             }
         }
     }
+
 
 
 }
